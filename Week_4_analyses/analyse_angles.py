@@ -103,3 +103,4 @@ def process_all_files(input_folder, output_file, duration):
 # Define the duration (in seconds) for the angle to be within ±10 degrees of the learning odour angle
 user_defined_duration = 10  # Change this value as needed
 process_all_files(input_folder, output_file, user_defined_duration)
+# test
