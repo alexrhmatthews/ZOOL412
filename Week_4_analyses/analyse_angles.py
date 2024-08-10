@@ -39,6 +39,9 @@ def process_file(filepath, duration):
     if animal_id is None or trial_number is None or learning_odour is None:
         raise ValueError(f"Missing metadata in file: {filepath}")
 
+    # Determine the learning odour angle
+    if learning_odour == "None":
+        learning_odour = "Air"
     learning_odour_angle = odour_positions[learning_odour]
 
     # Extract trajectory data
@@ -68,7 +71,8 @@ def process_file(filepath, duration):
             break
 
     if time_within_range < duration:
-        start_time = None  # If no valid start time is found
+        # If no valid start time is found, use the latest timestamp
+        start_time = trajectory_data[-1][0] if trajectory_data else None
 
     return {
         "animal_id": animal_id,
@@ -85,11 +89,12 @@ def process_all_files(input_folder, output_file, duration):
             filepath = os.path.join(input_folder, filename)
             try:
                 data = process_file(filepath, duration)
-                animal_id = data["animal_id"]
-                trial_number = data["trial_number"]
-                if animal_id not in processed_data:
-                    processed_data[animal_id] = {}
-                processed_data[animal_id][trial_number] = data
+                if data is not None:
+                    animal_id = data["animal_id"]
+                    trial_number = data["trial_number"]
+                    if animal_id not in processed_data:
+                        processed_data[animal_id] = {}
+                    processed_data[animal_id][trial_number] = data
             except Exception as e:
                 print(f"Error processing file {filepath}: {e}")
 
@@ -103,4 +108,3 @@ def process_all_files(input_folder, output_file, duration):
 # Define the duration (in seconds) for the angle to be within ±10 degrees of the learning odour angle
 user_defined_duration = 10  # Change this value as needed
 process_all_files(input_folder, output_file, user_defined_duration)
-# test
