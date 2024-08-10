@@ -1,5 +1,6 @@
 import os
 import json
+from tqdm import tqdm
 
 # Define the filepaths
 input_folder = "/projects/sciences/zoology/geurten_lab/alex_stuff/ZOOL412/rot_learning"
@@ -83,20 +84,22 @@ def process_file(filepath, duration):
 
 # Function to process all files in the input folder
 def process_all_files(input_folder, output_file, duration):
-    # Iterate over all files in the input folder
-    for filename in os.listdir(input_folder):
-        if filename.endswith(".txt"):
-            filepath = os.path.join(input_folder, filename)
-            try:
-                data = process_file(filepath, duration)
-                if data is not None:
-                    animal_id = data["animal_id"]
-                    trial_number = data["trial_number"]
-                    if animal_id not in processed_data:
-                        processed_data[animal_id] = {}
-                    processed_data[animal_id][trial_number] = data
-            except Exception as e:
-                print(f"Error processing file {filepath}: {e}")
+    # Get a list of all files in the input folder
+    files = [f for f in os.listdir(input_folder) if f.endswith(".txt")]
+
+    # Iterate over all files in the input folder with a progress bar
+    for filename in tqdm(files, desc="Processing files", unit="file"):
+        filepath = os.path.join(input_folder, filename)
+        try:
+            data = process_file(filepath, duration)
+            if data is not None:
+                animal_id = data["animal_id"]
+                trial_number = data["trial_number"]
+                if animal_id not in processed_data:
+                    processed_data[animal_id] = {}
+                processed_data[animal_id][trial_number] = data
+        except Exception as e:
+            print(f"Error processing file {filepath}: {e}")
 
     # Save the processed data to a JSON file
     with open(output_file, 'w') as json_file:
