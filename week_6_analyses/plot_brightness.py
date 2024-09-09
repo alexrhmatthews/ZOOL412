@@ -40,4 +40,9 @@ axes[1].set_ylabel('Normalized Brightness')
 
 # Adjust layout and show the plot
 plt.tight_layout()
-plt.show()
+import os
+output_folder = "/media/alexmatthews/Alex_011/ZOOL412/week_6/plots"
+output_file = os.path.join(output_folder, 'brightness_vs_velocity.png')
+plt.savefig(output_file)
+
+print(f"Plot saved to {output_file}")

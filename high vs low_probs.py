@@ -10,7 +10,7 @@ df = pd.read_csv(combined_data_file)
 print("shape", df.shape)
 
 # Filter the data to only include the rows where Distance is 10 meters
-df_10m = df[df['Distance'] ==10.0].copy()
+df_10m = df[df['Distance'] == 10.0].copy()
 print("len 10 =  ", len(df_10m))
 
 # Determine which agent beeped higher at 10 meters and create a mapping
@@ -69,5 +69,5 @@ else:
     print("Warning: 'Lower' group is empty!")
 
 # Save the plot
-plt.savefig('/media/alexmatthews/Alex_011/ZOOL412/week_6/Experiment_Results/BEEP_FREQ_VS_DIST_GROUPED_20.PNG')
+plt.savefig('/media/alexmatthews/Alex_011/ZOOL412/week_6/Experiment_Results/BEEP_FREQ_VS_DIST_GROUPED.PNG')
 plt.show()
